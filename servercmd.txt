@@ -1,0 +1,9 @@
+To run code continues:
+-----> nohup python3 -m uvicorn main:app &
+
+Show background running script/program:
+-----> ps aux | grep python3
+
+To kill running program in list:
+add Number of running to kill 
+-----> kill -9 <id>

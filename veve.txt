@@ -1,0 +1,14 @@
+ ---->cd myproject
+selecct your folder
+
+---->py -3 -m venv venv
+this will create env for that folder
+
+------>venv\Scripts\activate
+this will activate your env on command
+
+------>pip install -r requirements.txt
+this will install all the requirements for your project
+
+-------->deactivate
+to close the env

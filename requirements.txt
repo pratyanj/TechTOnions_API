@@ -1,7 +1,5 @@
 pydantic
 fastapi
 uvicorn[standard]
-python-multipart
 bs4
 requests
-sqlalchemy

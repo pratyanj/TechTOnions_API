@@ -76,7 +76,7 @@ async def scraper_runner(cid:int):
 async def GST(GST):
     if len(GST) == 15:
         conn = http.client.HTTPSConnection("apisetu.gov.in")
-        headers = {'X-APISETU-CLIENTID': "com.techtonions", 'X-APISETU-APIKEY': 'xiMFQwOQCexT3svwmaeGu31Blc4sl9Sr'}
+        headers = {'X-APISETU-CLIENTID': "com.techtonions", 'X-APISETU-APIKEY': '7u71h4gWEOAp0Qby1VNXeTogqborADJV'}
         conn.request("GET", f"/gstn/v2/taxpayers/{GST}", headers=headers)
         res = conn.getresponse()
         
@@ -88,7 +88,7 @@ async def GST(GST):
             return JSONResponse(content=json_response)
         else:
             # Handle non-200 status codes as needed
-            raise HTTPException(status_code=res.status, detail="API request failed")
+            raise HTTPException(status_code=res.status, detail=f"API request failed with status code {res.status}")
     else:
         raise HTTPException(status_code=401, detail="Enter a valid GST number")
 # **********************************GST api********************************************

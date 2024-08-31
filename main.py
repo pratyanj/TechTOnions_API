@@ -13,6 +13,7 @@ from scraper.nandan import scraper_1
 from scraper.tirupati import scraper_2
 from scraper.mahabali import scraper_3
 
+from fastapi import File, UploadFile
 
 app = FastAPI()
 # server origin
@@ -41,7 +42,7 @@ app.add_middleware(
 nandan=scraper_1()
 tirupati=scraper_2()
 mahabali=scraper_3()
-# author
+# -------------------author-------------------
 API_KEY = "pratyanj"
 # API_KEY = "12c666fe-6fcc-4e25-aa32-5d398ac6dfdf70d28731-5377-41b7-ab83-8ce1a710f0dcd5b52729-74e6-4837-886a-c5a5fbea8d77"
 
@@ -53,6 +54,7 @@ async def check_api_key(api_key: str = Depends(api_key_header)):
     # if not api_key or api_key != f"Bearer {API_KEY}":
     if not api_key or api_key != API_KEY:
         raise HTTPException(status_code=401, detail="Enter invalid API key")
+# -------------------author-------------------
 
 # # Define a protected route that requires the API key
 # @app.get("/login for TO", dependencies=[Depends(check_api_key)])
@@ -92,6 +94,30 @@ async def GST(GST):
     else:
         raise HTTPException(status_code=401, detail="Enter a valid GST number")
 # **********************************GST api********************************************
+# @app.post("/uploadFile/") #for server change to post
+@app.post("/uploadFile/", dependencies=[Depends(check_api_key)])
+async def uploadFile(file):
+    if file.filename.endswith(('.zip', '.rar')):
+        conn = http.client.HTTPSConnection("api.jlcpcb.com")
+        headers = {
+            'token': "9ab48b1210",
+        }
+        
+        file_content = await file.read()
+        
+        conn.request("POST", "/exterior/order/uploadFile", body=file_content, headers=headers)
+        res = conn.getresponse()
+        
+        if res.status == 200:
+            data = res.read()
+            return JSONResponse(content=json.loads(data.decode("utf-8")))
+        else:
+            raise HTTPException(status_code=res.status, detail=f"API request failed with status code {res.status}")
+    else:
+        raise HTTPException(status_code=400, detail="Only ZIP or RAR files are allowed")
+    
+
+    
 # --------------main page as docs----------------------------
 @app.get("/", include_in_schema=False)
 async def redirect_to_docs():
